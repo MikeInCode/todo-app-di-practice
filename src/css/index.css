@@ -1,0 +1,352 @@
+/*----------Global----------*/
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  background: #f3f3f6;
+}
+
+.app-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/*----------Header----------*/
+
+header {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0 2rem 0;
+}
+
+.logo {
+  height: 2.4rem;
+  margin-right: 0.5rem;
+}
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.app-title {
+  font-weight: 700;
+  font-size: 3rem;
+}
+
+.header-line {
+  height: 0.4rem;
+  margin: 0 0.5rem 0 0.5rem;
+  background: #000000;
+  flex: 1;
+}
+
+/*----------Main----------*/
+
+main {
+  padding-top: 0.8rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  position: relative;
+  flex: 0 1 calc(50% - 0.6rem);
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 1.4rem 1.4rem 2.6rem 1.4rem;
+}
+
+.card:nth-child(2n + 1) {
+  margin: 0.6rem 0.6rem 0.6rem 0;
+}
+
+.card:nth-child(2n) {
+  margin: 0.6rem 0 0.6rem 0.6rem;
+}
+
+.card-title {
+  width: 90%;
+  font-family: inherit;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 0;
+  text-overflow: ellipsis;
+}
+
+.input-underline {
+  display: block;
+  position: absolute;
+  width: calc(90% - 2.6rem);
+  height: 2px;
+}
+
+.input-underline::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  margin-top: 4px;
+  background: #838383;
+  opacity: 0;
+  transition: 0.35s ease-out;
+  border-radius: 50px;
+}
+
+.card-title:focus + .input-underline::after {
+  width: 100%;
+  opacity: 1;
+}
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 1rem 0;
+}
+
+.task {
+  font-weight: 400;
+  line-height: 2;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 0.6rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 6px;
+  border: 2px solid #838383;
+}
+
+input[type="checkbox"]:checked ~ .checkbox {
+  border: 2px solid #000000;
+  background: #000000;
+}
+
+input[type="checkbox"]:checked ~ .task-text {
+  text-decoration: line-through;
+}
+
+input[type="checkbox"]:checked ~ .checkbox::after {
+  position: absolute;
+  content: "\230B";
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin: -13px 0 0 7px;
+  transform: rotate(45deg);
+}
+
+.task-text {
+  margin-left: 1.8rem;
+}
+
+.task,
+.add-to-do {
+  position: relative;
+  font-size: 1.2rem;
+  color: #838383;
+}
+
+.add-to-do {
+  border: 0;
+  width: 90%;
+  font-family: inherit;
+}
+
+.add-to-do:focus + .input-underline::after {
+  width: 100%;
+  opacity: 1;
+}
+
+.trash {
+  position: absolute;
+  right: 0;
+  margin-right: 1.4rem;
+  color: #aaaaaa;
+}
+
+.add-to-do,
+.trash,
+.card-title,
+label {
+  cursor: pointer;
+}
+
+/*----------Sidebar----------*/
+
+.sidebar {
+  position: fixed;
+  width: 35%;
+  height: 100vh;
+  top: 0;
+  right: 0;
+  background: #ffffff;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.close-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 2rem;
+}
+
+.close-btn {
+  position: relative;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+  width: 2.6rem;
+  height: 2.6rem;
+  background: #ffffff;
+}
+
+.close-btn::before,
+.close-btn::after {
+  position: absolute;
+  content: "";
+  width: 2rem;
+  height: 2px;
+  border-radius: 50px;
+  background: #000000;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  transform: rotate(-45deg);
+}
+
+.close-btn::after {
+  transform: rotate(45deg);
+}
+
+.new-card-wrapper {
+  overflow: auto;
+  padding: 0 1.4rem;
+  margin-bottom: 5rem;
+}
+
+.new-card-wrapper > .card-title {
+  width: 100%;
+  text-transform: none;
+  margin-bottom: 1rem;
+}
+
+.new-card-wrapper > .add-to-do {
+  width: 100%;
+}
+
+.add-btn {
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+  height: 4rem;
+  bottom: 0;
+  width: 100%;
+  position: absolute;
+  color: #ffffff;
+  font-size: 1.2rem;
+  background: #000000;
+}
+
+/*----------Floating button----------*/
+
+.floating-btn-wrapper {
+  position: absolute;
+  width: 3.8rem;
+  height: 3.8rem;
+  bottom: 3rem;
+  right: 15px;
+}
+
+.floating-btn {
+  position: fixed;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+  bottom: 3rem;
+  width: 3.8rem;
+  height: 3.8rem;
+  border-radius: 50px;
+  background: #000000;
+}
+
+.floating-btn::before,
+.floating-btn::after {
+  position: absolute;
+  content: "";
+  width: 2rem;
+  height: 2px;
+  border-radius: 50px;
+  background: #f3f3f6;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.floating-btn::after {
+  width: 2px;
+  height: 2rem;
+}
+
+/*----------Media queries----------*/
+
+@media (max-width: 1200px) {
+  .sidebar {
+    width: 50%;
+  }
+}
+
+@media (max-width: 680px) {
+  .card {
+    flex: 1 1 100%;
+  }
+
+  .card:nth-child(2n + 1) {
+    margin: 0 0 1rem 0;
+  }
+
+  .card:nth-child(2n) {
+    margin: 0 0 1rem 0;
+  }
+
+  .floating-btn-wrapper {
+    bottom: 15px;
+  }
+
+  .floating-btn {
+    bottom: 15px;
+  }
+
+  .sidebar {
+    width: 75%;
+  }
+}
+
+@media (max-width: 440px) {
+  .sidebar {
+    width: 100%;
+  }
+}
