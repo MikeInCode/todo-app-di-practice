@@ -32,18 +32,12 @@ header {
   margin-right: 0.5rem;
 }
 
-.title-wrapper {
-  display: flex;
-  align-items: center;
-  flex: 1;
-}
-
 .app-title {
   font-weight: 700;
   font-size: 3rem;
 }
 
-.header-line {
+.app-title-line {
   height: 0.4rem;
   margin: 0 0.5rem 0 0.5rem;
   background: #000000;
@@ -200,7 +194,7 @@ label {
   right: 0;
   background: #ffffff;
   z-index: 1;
-  display: flex;
+  display: none;
   flex-direction: column;
 }
 
