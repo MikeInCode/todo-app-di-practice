@@ -140,12 +140,10 @@ input[type="checkbox"]:checked ~ .task-text {
 
 input[type="checkbox"]:checked ~ .checkbox::after {
   position: absolute;
-  content: "\230B";
-  font-size: 1.1rem;
-  font-weight: bold;
+  content: "\2714";
+  font-size: 1rem;
   color: #ffffff;
-  margin: -13px 0 0 7px;
-  transform: rotate(45deg);
+  margin: -0.45rem 0 0 0.05rem;
 }
 
 .task-text {
@@ -187,6 +185,8 @@ label {
 /*----------Sidebar----------*/
 
 .sidebar {
+  display: flex;
+  flex-direction: column;
   position: fixed;
   width: 35%;
   height: 100vh;
@@ -194,8 +194,12 @@ label {
   right: 0;
   background: #ffffff;
   z-index: 1;
-  display: none;
-  flex-direction: column;
+  transform: translate(100%);
+  transition: 0.5s;
+}
+
+.sidebar.active {
+  transform: translate(0%);
 }
 
 .close-btn-wrapper {
