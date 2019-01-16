@@ -15,56 +15,27 @@
       integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
       crossorigin="anonymous"
     />
+    <script src="js/index.js" defer></script>
     <link rel="stylesheet" href="css/index.css" />
-    <script src="./js/index.js" defer></script>
   </head>
   <body>
     <div class="app-container">
       <header>
         <img
-          draggable="false"
-          class="logo"
           src="img/di_logo.svg"
+          class="logo"
           alt="DI Logo"
+          draggable="false"
         />
         <h1 class="app-title">To</h1>
         <span class="app-title-line"></span>
         <h1 class="app-title">do</h1>
       </header>
-      <main>
-        <div class="card">
-          <i class="fas fa-trash trash fa-lg"></i>
-          <input type="text" class="card-title" value="Card 1" />
-          <span class="input-underline"></span>
-          <div class="tasks">
-            <label class="task">
-              <input type="checkbox" /><span class="checkbox"></span>
-              <p class="task-text">Prepare mockups for Invoice flow</p>
-            </label>
-            <label class="task">
-              <input type="checkbox" /> <span class="checkbox"></span>
-              <p class="task-text">Add data</p>
-            </label>
-            <label class="task">
-              <input type="checkbox" /> <span class="checkbox"></span>
-              <p class="task-text">Demo with VJ</p>
-            </label>
-            <label class="task">
-              <input type="checkbox" /> <span class="checkbox"></span>
-              <p class="task-text">
-                Prepare mockups for Invoice flow, contracts, new template
-                animation
-              </p>
-            </label>
-          </div>
-          <input type="text" class="add-to-do" placeholder="Add to-do" />
-          <span class="input-underline"></span>
-        </div>
-      </main>
+      <main></main>
       <div class="sidebar">
         <div class="close-btn-wrapper"><button class="close-btn"></button></div>
-        <div class="new-card-wrapper">
-          <input type="text" class="card-title" placeholder="Add title" />
+        <div class="new-dashboard-wrapper">
+          <input type="text" class="dashboard-title" placeholder="Add title" />
           <input type="text" class="add-to-do" placeholder="Add to-do" />
         </div>
         <button class="add-btn">Add</button>
