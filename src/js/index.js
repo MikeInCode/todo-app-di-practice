@@ -2,52 +2,36 @@ const generateId = () => {
   return Math.floor(Math.random() * 100000);
 };
 
-let todos = [
-  {
-    id: generateId(),
-    title: "Dashboard 1",
-    tasks: [
+const saveToStorage = todos => {
+  localStorage.setItem("todosData", JSON.stringify(todos));
+};
+
+const getFromStorage = () => {
+  if (JSON.parse(localStorage.getItem("todosData")) === null) {
+    const defaultDashboard = [
       {
         id: generateId(),
-        name: "Task 1",
-        selected: true
-      },
-      {
-        id: generateId(),
-        name: "Task 2",
-        selected: false
-      },
-      {
-        id: generateId(),
-        name: "Task 3",
-        selected: true
+        title: "Dashboard 1",
+        tasks: [
+          {
+            id: generateId(),
+            name: "Task 1",
+            selected: false
+          }
+        ]
       }
-    ]
-  },
-  {
-    id: generateId(),
-    title: "Dashboard 2",
-    tasks: [
-      {
-        id: generateId(),
-        name: "Task 1",
-        selected: false
-      },
-      {
-        id: generateId(),
-        name: "Task 2",
-        selected: true
-      }
-    ]
+    ];
+    saveToStorage(defaultDashboard);
   }
-];
+  return JSON.parse(localStorage.getItem("todosData"));
+};
 
 const generateTaskHtml = taskObj => {
   const task = new DOMParser().parseFromString(
     `
     <div class="task-wrapper">
       <div class="checkbox ${taskObj.selected ? "selected" : ""}"
-      onclick="toggleSelected(event)"></div>
+      onclick="toggleSelected(event,${taskObj.id})"></div>
       <input class="task" value="${taskObj.name}"
       onkeypress="updateTask(event, ${taskObj.id})"
       onfocus="showUnderline(event)"
@@ -115,11 +99,13 @@ const loadDashboards = todos => {
   });
 };
 
+let todos = getFromStorage();
 loadDashboards(todos);
 
 const deleteDashboard = (event, id) => {
   event.target.parentElement.remove();
   todos = todos.filter(item => item.id !== id);
+  saveToStorage(todos);
 };
 
 const checkFormValidation = form => {
@@ -179,12 +165,13 @@ const addDashboard = event => {
     tasks: tasks
   };
 
-  todos.push(newDashboard);
   document
     .querySelector("main")
     .appendChild(generateDashboardHtml(newDashboard));
+  todos = [...todos, newDashboard];
   hideSidebar();
   resetFormState(form);
+  saveToStorage(todos);
 };
 
 const addTask = (event, dashboardId) => {
@@ -198,14 +185,13 @@ const addTask = (event, dashboardId) => {
     const addTodoInput = event.target.parentElement;
     const dashboard = addTodoInput.parentElement;
     dashboard.insertBefore(taskHtml, addTodoInput);
-    todos = todos.map(item => {
-      if (item.id === dashboardId) {
-        item.tasks.push(newTask);
-      }
-      return item;
-    });
+    todos = todos.map(item =>
+      item.id === dashboardId
+        ? { ...item, tasks: [...item.tasks, newTask] }
+        : item
+    );
     event.target.blur();
-    console.log(todos);
+    saveToStorage(todos);
   }
 };
 
@@ -215,7 +201,7 @@ const deleteTask = (event, id) => {
     item.tasks = item.tasks.filter(task => task.id !== id);
     return item;
   });
-  console.log(todos);
+  saveToStorage(todos);
 };
 
 let inputValue = "";
@@ -223,50 +209,39 @@ let inputValue = "";
 const updateTask = (event, id) => {
   if (event.keyCode === 13) {
     todos = todos.map(item => {
-      item.tasks = item.tasks.map(task => {
-        if (task.id === id) {
-          task.name = event.target.value;
-        }
-        return task;
-      });
+      item.tasks = item.tasks.map(task =>
+        task.id === id ? { ...task, name: event.target.value } : task
+      );
       return item;
     });
     inputValue = event.target.value;
     event.target.blur();
-    console.log(todos);
+    saveToStorage(todos);
   }
 };
 
 const updateTitle = (event, id) => {
   if (event.keyCode === 13) {
-    todos = todos.map(item => {
-      if (item.id === id) {
-        item.title = event.target.value;
-      }
-      return item;
-    });
+    todos = todos.map(item =>
+      item.id === id ? { ...item, title: event.target.value } : item
+    );
     inputValue = event.target.value;
     event.target.blur();
-    console.log(todos);
+    saveToStorage(todos);
   }
 };
 
-const toggleSelected = event => {
+const toggleSelected = (event, taskId) => {
   const input = event.target.nextElementSibling;
-  const dashboard = input.parentElement.parentElement;
-  event.target.classList.toggle("selected");
   input.disabled = !input.disabled;
+  event.target.classList.toggle("selected");
   todos = todos.map(item => {
-    if (item.id === Number(dashboard.id)) {
-      item.tasks = item.tasks.map(task => {
-        if (task.id === Number(input.id)) {
-          task.selected = !task.selected;
-        }
-        return task;
-      });
-    }
+    item.tasks = item.tasks.map(task =>
+      task.id === taskId ? { ...task, selected: !task.selected } : task
+    );
     return item;
   });
+  saveToStorage(todos);
 };
 
 const showSidebar = () => {
