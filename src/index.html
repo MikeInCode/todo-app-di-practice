@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="css/index.css" />
   </head>
   <body>
+    <div class="overlay"></div>
     <div class="app-container">
       <header>
         <img
@@ -32,17 +33,30 @@
         <h1 class="app-title">do</h1>
       </header>
       <main></main>
-      <div class="sidebar">
-        <div class="close-btn-wrapper"><button class="close-btn"></button></div>
-        <div class="new-dashboard-wrapper">
-          <input type="text" class="dashboard-title" placeholder="Add title" />
-          <input type="text" class="add-to-do" placeholder="Add to-do" />
-        </div>
-        <button class="add-btn">Add</button>
-      </div>
       <div class="floating-btn-wrapper">
-        <button class="floating-btn"></button>
+        <button class="floating-btn" onclick="showSidebar()"></button>
       </div>
+    </div>
+    <div class="sidebar">
+      <button class="close-btn" onclick="hideSidebar()"></button>
+      <form onsubmit="addDashboard(event)" oninput="checkFormValidation(this)">
+        <div class="form-content">
+          <input
+            name="title"
+            type="text"
+            class="dashboard-title"
+            placeholder="Add title"
+          />
+          <input
+            name="task"
+            type="text"
+            class="add-task"
+            placeholder="Add to-do"
+            oninput="addSidebarInput(event)"
+          />
+        </div>
+        <button name="btn" class="add-btn" disabled>Add</button>
+      </form>
     </div>
   </body>
 </html>

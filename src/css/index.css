@@ -25,8 +25,25 @@ button:focus {
 .app-container {
   position: relative;
   max-width: 1200px;
+  height: 100vh;
   margin: 0 auto;
   padding: 0 15px;
+}
+
+.overlay {
+  background: #3d3d3d;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.5s;
+}
+
+.overlay.active {
+  opacity: 0.3;
+  visibility: visible;
 }
 
 /*----------Header----------*/
@@ -70,7 +87,6 @@ main {
   padding: 1.4rem 1.4rem 0.6rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 }
 
 .dashboard:nth-child(2n + 1) {
@@ -81,25 +97,31 @@ main {
   margin: 0.6rem 0 0.6rem 0.6rem;
 }
 
-.dashboard-title-wrapper,
+.title-wrapper,
+.task-wrapper,
 .add-task-wrapper {
   position: relative;
-  width: 90%;
+  width: 95%;
+  margin-bottom: 1.2rem;
 }
 
-.underline {
+.title-wrapper::after,
+.task-wrapper::after,
+.add-task-wrapper::after {
   position: absolute;
+  content: "";
   width: 0%;
   height: 2px;
   left: 0;
-  bottom: 1.2rem;
+  bottom: -0.25rem;
   border-radius: 50px;
   background: #838383;
   transition: 0.3s ease-out;
 }
 
-.dashboard-title:focus + .underline,
-.add-task:focus + .underline {
+.title-wrapper.active::after,
+.task-wrapper.active::after,
+.add-task-wrapper.active::after {
   width: 100%;
 }
 
@@ -111,13 +133,21 @@ main {
   width: 100%;
 }
 
-.task {
-  position: relative;
+.task-wrapper {
   display: flex;
   align-items: center;
 }
 
+.task-wrapper::after {
+  left: 1.6rem;
+}
+
+.task-wrapper.active::after {
+  width: calc(100% - 1.6rem);
+}
+
 .checkbox {
+  position: relative;
   margin-right: 0.5rem;
   width: 1.25rem;
   height: 1.25rem;
@@ -125,12 +155,12 @@ main {
   border: 2px solid #838383;
 }
 
-.task.selected > .checkbox {
+.checkbox.selected {
   border: 2px solid #000000;
   background: #000000;
 }
 
-.task.selected > .checkbox::after {
+.checkbox.selected::after {
   position: absolute;
   content: "\2714";
   color: #ffffff;
@@ -139,9 +169,28 @@ main {
 
 .task,
 .add-task {
+  width: 100%;
   font-size: 1.2rem;
   font-weight: 400;
   color: #838383;
+  text-overflow: ellipsis;
+}
+
+.task {
+  width: 90%;
+}
+
+.dashboard-title:disabled,
+.task:disabled {
+  text-decoration: line-through;
+}
+
+.trash,
+.dashboard-title,
+.checkbox,
+.task,
+.add-task {
+  cursor: pointer;
 }
 
 .trash {
@@ -152,15 +201,15 @@ main {
   margin: 0.9rem 0.8rem 0 0;
 }
 
-.dashboard-title,
-.task,
-.add-task {
-  cursor: pointer;
-  margin-bottom: 1.4rem;
+.task-wrapper > .trash {
+  display: none;
+  height: 1rem;
+  margin: auto;
+  bottom: 0;
 }
 
-.trash {
-  cursor: pointer;
+.task-wrapper:hover > .trash {
+  display: block;
 }
 
 /*----------Sidebar----------*/
@@ -183,20 +232,14 @@ main {
   transform: translate(0%);
 }
 
-.close-btn-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  padding: 2rem;
-}
-
 .close-btn {
   position: relative;
-  border: 0;
-  font: inherit;
-  cursor: pointer;
   width: 2.6rem;
   height: 2.6rem;
+  margin: 1.8rem;
+  align-self: flex-end;
   background: #ffffff;
+  cursor: pointer;
 }
 
 .close-btn::before,
@@ -219,33 +262,37 @@ main {
   transform: rotate(45deg);
 }
 
-.new-dashboard-wrapper {
-  overflow: auto;
-  padding: 0 1.4rem;
-  margin-bottom: 5rem;
+.sidebar > form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
-.new-dashboard-wrapper > .dashboard-title {
-  width: 100%;
-  text-transform: none;
+.form-content {
+  padding: 0 1.4rem 1.4rem 1.4rem;
+  flex: 1;
+  overflow: auto;
+}
+
+.form-content > input {
   margin-bottom: 1rem;
 }
 
-.new-dashboard-wrapper > .add-task {
-  width: 100%;
+.form-content > .dashboard-title {
+  text-transform: none;
 }
 
 .add-btn {
-  border: 0;
-  font: inherit;
-  cursor: pointer;
-  height: 4rem;
-  bottom: 0;
-  width: 100%;
-  position: absolute;
-  color: #ffffff;
+  padding: 1.2rem 0;
   font-size: 1.2rem;
+  color: #ffffff;
   background: #000000;
+  cursor: pointer;
+}
+
+.add-btn:disabled {
+  background: #838383;
 }
 
 /*----------Floating button----------*/
@@ -260,12 +307,10 @@ main {
 
 .floating-btn {
   position: fixed;
-  border: 0;
-  font: inherit;
   cursor: pointer;
-  bottom: 3rem;
   width: 3.8rem;
   height: 3.8rem;
+  bottom: 3rem;
   border-radius: 50px;
   background: #000000;
 }
